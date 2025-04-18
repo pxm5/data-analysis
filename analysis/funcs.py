@@ -7,7 +7,7 @@ import datetime as dt
 from typing import Literal
 import click
 
-import shared
+from analysis import shared
 
 # Methods for data exploration
 
@@ -130,6 +130,11 @@ def convert_to_datetime(column, format):
         df[column] = pd.to_datetime(df[column], format=format)
     else:
         df[column] = pd.to_datetime(df[column], errors="coerce")
+
+@click.command()
+def show():
+    click.echo(shared.df)
+
 
 @click.command()
 @click.argument("loc")
