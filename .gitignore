@@ -3,3 +3,5 @@
 /out.csv
 /test.py
 /__pycache__
+analysis/__pycache__
+/dist

@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "data-cli"
+version = "0.1.0"
+description = "CLI tool for data analysis"
+authors = ["Preetham <preethu.mamill@gmail.com>"]
+packages = [{ include = "analysis" }]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+click = "^8.0"
+pandas = "^1.2"
+pyfiglet = "^0.8.0"
+rich = "^10.0"
+
+[tool.poetry.scripts]
+data-cli = "analysis.main:main"  # This points to your main() function for the CLI

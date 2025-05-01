@@ -4,17 +4,17 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import re
 import datetime as dt
-from typing import Literal
 import click
+from rich import print
+from rich.console import Console
 
 from analysis import shared
 
 # Methods for data exploration
-
 @click.command()
 @click.argument("x")
 @click.argument("y")
-def make_lineplot(x, y):
+def lineplot(x, y):
     df = shared.df
     sns.lineplot(data=df, x=x, y=y)
     plt.show()
@@ -22,7 +22,7 @@ def make_lineplot(x, y):
 @click.command()
 @click.argument("x")
 @click.argument("y")
-def make_scatterplot(x, y):
+def scatterplot(x, y):
     df = shared.df
     sns.scatterplot(data=df, x=x, y=y)
     plt.show()
@@ -30,7 +30,7 @@ def make_scatterplot(x, y):
 @click.command()
 @click.argument("x")
 @click.option("--y", default=None, help="Optional y-axis for boxplot")
-def make_boxplot(x, y):
+def boxplot(x, y):
     df = shared.df
     if y:
         sns.boxplot(df, x=x, y=y)
@@ -41,7 +41,7 @@ def make_boxplot(x, y):
 @click.command()
 @click.argument("x")
 @click.option("--y", default=None, help="Optional y-axis for histogram")
-def make_histogram(x, y):
+def histogram(x, y):
     df = shared.df
     if y:
         sns.histplot(df, x=x, y=y)
@@ -133,10 +133,35 @@ def convert_to_datetime(column, format):
 
 @click.command()
 def show():
-    click.echo(shared.df)
+    console = Console()
+    console.print(shared.df)
 
 
 @click.command()
 @click.argument("loc")
 def save(loc):
     shared.df.to_csv(loc, index=False)
+
+@click.command()
+@click.option("--showna", help="Show the composition of NA values in each column", is_flag=True)
+def audit(showna):
+    df = shared.df
+    print(df.describe())
+    print()
+    if showna:
+        print("[bold blue]Null values with respect to columns:[/bold blue]")
+        for col in df:
+            print(f"{col}: {df[col].isna().sum()}")
+
+@click.command()
+@click.argument('col')
+@click.option('-m',"--method", type=click.Choice(["drop", "winsorize", "impute"]))
+@click.option("--type", type=click.Choice(["mean", "median", "mode"]), default=None)
+def handle_outliers(col, method, details):
+    df = shared.df
+    match method:
+        case "drop":
+            q1 = df[col].quantile(0.25)
+            q3 = df[col].quantile(0.75)
+            iqr = q3-q1
+                

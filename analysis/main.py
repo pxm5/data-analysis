@@ -39,9 +39,9 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"Failed to read the file: {e}")
         exit(1)
-    print("[bold red]COMMANDS:[/bold red]")
-
-    command_names()
+    print("[bold red]COMMANDS QUICKHELP:[/bold red]")
+    print("exit: Exit the CLI tool")
+    print("cmds: Shows all commands and methods available to you")
     while True:
         try:
             command = click.prompt(click.style(">>>", fg='blue', bold=True))
@@ -50,8 +50,12 @@ if __name__ == "__main__":
                 break
             if command.lower() =="cmds":
                 command_names()
+                continue
             args = command.strip().split()
-            main(args, standalone_mode=False)
+            cmd_name = args[0]
+            if cmd_name in main.commands:
+                cmd = main.commands[cmd_name]
+                cmd(args[1:])
         except SystemExit:
             pass
         except KeyboardInterrupt:
@@ -59,3 +63,4 @@ if __name__ == "__main__":
         except Exception as e:
             print(f"ERROR: {e}")
     exit(0)
+    
