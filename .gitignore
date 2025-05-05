@@ -5,3 +5,6 @@
 /__pycache__
 analysis/__pycache__
 /dist
+/.venv
+/build
+*.egg-info/

@@ -8,30 +8,8 @@ import pyfiglet
 from rich import print
 
 
-
-
-@click.group()
-def main():
-    pass
-    
-def banner():
-    banner = pyfiglet.figlet_format("DATA CLI", font="eftitalic")
-    formatted = click.style(banner, fg='green', bold=True)
-    click.echo(formatted)
-
-def command_names():
-    x = 0
-    for name, cmd in main.commands.items():
-        if isinstance(cmd, click.core.Command):
-            print(f'{x}. {name}')
-            x+=1
-
-for command in dir(funcs):
-    cmd = getattr(funcs, command)
-    if isinstance(cmd, click.core.Command):
-        main.add_command(cmd, name=command)
-
-if __name__ == "__main__":
+def run():
+    print("MAIN HAS BEEN CALLED")
     banner()
     path = input("Enter path to your csv file: \n")
     try:
@@ -63,4 +41,29 @@ if __name__ == "__main__":
         except Exception as e:
             print(f"ERROR: {e}")
     exit(0)
+
+@click.group()
+def main():
+    pass
+    
+def banner():
+    banner = pyfiglet.figlet_format("DATA CLI", font="eftitalic")
+    formatted = click.style(banner, fg='green', bold=True)
+    click.echo(formatted)
+
+def command_names():
+    x = 0
+    for name, cmd in main.commands.items():
+        if isinstance(cmd, click.core.Command):
+            print(f'{x}. {name}')
+            x+=1
+
+for command in dir(funcs):
+    cmd = getattr(funcs, command)
+    if isinstance(cmd, click.core.Command):
+        main.add_command(cmd, name=command)
+
+
+if __name__=="__main__":
+    run()
     
