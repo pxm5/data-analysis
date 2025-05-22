@@ -9,7 +9,6 @@ from rich import print
 
 
 def run():
-    print("MAIN HAS BEEN CALLED")
     banner()
     path = input("Enter path to your csv file: \n")
     try:

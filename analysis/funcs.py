@@ -189,14 +189,15 @@ def save(loc):
 def _summary(showna):
     df = shared.df
     print(df.describe())
-
+    if showna:
+        _nulls()
 
 @click.command()
 @click.option("--showna", "-n", help="Optional toggle to show null values", default=False, is_flag=True)
-def summary():
-    _summary()
+def summary(showna):
+    _summary(showna)
 
-def _nulls(col):
+def _nulls(col=None):
     df = shared.df
     if col is not None:
         print(df[col].isna().sum())
